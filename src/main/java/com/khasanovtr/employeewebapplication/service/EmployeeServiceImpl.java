@@ -6,14 +6,18 @@ import com.khasanovtr.employeewebapplication.exception.EmployeeStorageIsFullExce
 import com.khasanovtr.employeewebapplication.model.Employee;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.groupingBy;
+
 @Service
-public class EmployeeServiceImpl implements EmployeeService{
+public class EmployeeServiceImpl implements EmployeeService {
 
     private static final int MAX = 5;
-    private static final Map<String,Employee> employees = new HashMap<>();
+    private static final Map<String, Employee> employees = new HashMap<>();
+    private Object EmployeeNotFoundException;
 
     public Employee add(String name, String lastName) {
         Employee employee = new Employee(name, lastName);
@@ -28,7 +32,7 @@ public class EmployeeServiceImpl implements EmployeeService{
     }
 
     @Override
-    public Employee remove (String name, String lastName) {
+    public Employee remove(String name, String lastName) {
         Employee employee = new Employee(name, lastName);
         if (!employees.containsKey(employee.getFullName())) {
             throw new EmployeeNotFoundException("Нет такого сотрудника");
@@ -38,7 +42,7 @@ public class EmployeeServiceImpl implements EmployeeService{
     }
 
     @Override
-    public Employee find (String name, String lastName) {
+    public Employee find(String name, String lastName) {
         Employee employee = new Employee(name, lastName);
         if (employees.containsKey(employee.getFullName())) {
             throw new EmployeeNotFoundException("Нет такого сотрудника");
@@ -50,6 +54,8 @@ public class EmployeeServiceImpl implements EmployeeService{
     public Collection<Employee> findAll() {
         return employees.values();
     }
+
+
 
 
 }
